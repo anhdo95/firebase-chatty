@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { signup } from "helpers/auth";
+import { signup, signInWithGoogle } from "helpers/auth";
 
 function Signup() {
   const [email, setEmail] = useState();
@@ -11,7 +11,7 @@ function Signup() {
     async (event) => {
       event.preventDefault();
       setError();
-      
+
       try {
         await signup(email, password);
       } catch (e) {
@@ -30,6 +30,14 @@ function Signup() {
     setter(target.value);
   }, []);
 
+  const googleSignIn = useCallback(async function () {
+    try {
+      await signInWithGoogle();
+    } catch (e) {
+      setError(e.message);
+    }
+  }, []);
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -44,7 +52,7 @@ function Signup() {
             type="email"
             onChange={handleChange}
             value={email}
-          ></input>
+          />
         </div>
         <div>
           <input
@@ -53,11 +61,15 @@ function Signup() {
             onChange={handleChange}
             value={password}
             type="password"
-          ></input>
+          />
         </div>
         <div>
           {error ? <p>{error}</p> : null}
           <button type="submit">Sign up</button>
+          <p>Or</p>
+          <button onClick={googleSignIn} type="button">
+            Sign up with Google
+          </button>
         </div>
         <hr></hr>
         <p>

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { signin } from "helpers/auth";
+import { signin, signInWithGoogle } from "helpers/auth";
 
 function Login() {
   const [email, setEmail] = useState();
@@ -28,6 +28,14 @@ function Login() {
     }[target.name];
 
     setter(target.value);
+  }, []);
+
+  const googleSignIn = useCallback(async function () {
+    try {
+      await signInWithGoogle();
+    } catch (e) {
+      setError(e.message);
+    }
   }, []);
 
   return (
@@ -59,6 +67,10 @@ function Login() {
         <div>
           {error ? <p>{error}</p> : null}
           <button type="submit">Login</button>
+          <p>Or</p>
+          <button onClick={googleSignIn} type="button">
+            Sign in with Google
+          </button>
         </div>
         <hr />
         <p>
