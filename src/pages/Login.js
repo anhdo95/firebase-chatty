@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { signin, signInWithGoogle } from "helpers/auth";
+import { signin, signInWithGoogle, signInWithGitHub } from "helpers/auth";
 
 function Login() {
   const [email, setEmail] = useState();
@@ -38,6 +38,14 @@ function Login() {
     }
   }, []);
 
+  const githubSignIn = useCallback(async function () {
+    try {
+      await signInWithGitHub();
+    } catch (e) {
+      setError(e.message);
+    }
+  }, []);
+
   return (
     <div>
       <form autoComplete="off" onSubmit={handleSubmit}>
@@ -70,6 +78,9 @@ function Login() {
           <p>Or</p>
           <button onClick={googleSignIn} type="button">
             Sign in with Google
+          </button>
+          <button type="button" onClick={githubSignIn}>
+            Sign in with GitHub
           </button>
         </div>
         <hr />
