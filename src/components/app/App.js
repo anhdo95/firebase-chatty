@@ -1,17 +1,21 @@
-import React from "react";
-import Router from 'components/router/Router'
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import Router from "components/router/Router";
+import { auth } from "services/firebase";
+import { setIsAuthenticated } from "store/auth";
 
 import "./App.css";
 
 function App() {
-  const loading = false
-  const authenticated = true
+  const dispatch = useDispatch();
 
-  return loading ? (
-    <h2>Loading...</h2>
-  ) : (
-    <Router authenticated={authenticated} />
-  );
+  useEffect(() => {
+    auth().onAuthStateChanged((user) => {
+      dispatch(setIsAuthenticated(!!user));
+    });
+  }, [dispatch]);
+
+  return <Router />;
 }
 
 export default App;

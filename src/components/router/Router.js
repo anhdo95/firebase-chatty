@@ -1,8 +1,12 @@
 import React, { useCallback } from "react";
+import { useSelector } from "react-redux";
 import { Route, BrowserRouter, Switch } from "react-router-dom";
 import routes, { PrivateRoute, PublicRoute } from "routes";
+import { selectIsAuthenticated } from "store/auth";
 
-function Router(props) {
+function Router() {
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   const renderRoutes = useCallback(
     function () {
       return routes.map((route) => {
@@ -19,11 +23,11 @@ function Router(props) {
 
         const Component = route.private ? PrivateRoute : PublicRoute;
         return (
-          <Component {...routeProps} authenticated={props.authenticated} />
+          <Component {...routeProps} authenticated={isAuthenticated} />
         );
       });
     },
-    [props.authenticated]
+    [isAuthenticated]
   );
 
   return (
