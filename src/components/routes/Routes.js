@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useSelector } from "react-redux";
-import { Route, BrowserRouter, Switch } from "react-router-dom";
+import { Route } from "react-router-dom";
 import routes, { PrivateRoute, PublicRoute } from "routes";
 import { selectIsAuthenticated } from "store/auth";
 
@@ -22,19 +22,13 @@ function Router() {
         }
 
         const Component = route.private ? PrivateRoute : PublicRoute;
-        return (
-          <Component {...routeProps} authenticated={isAuthenticated} />
-        );
+        return <Component {...routeProps} authenticated={isAuthenticated} />;
       });
     },
     [isAuthenticated]
   );
 
-  return (
-    <BrowserRouter>
-      <Switch>{renderRoutes()}</Switch>
-    </BrowserRouter>
-  );
+  return renderRoutes();
 }
 
 export default Router;
