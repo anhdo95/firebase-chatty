@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { signin, signInWithGoogle, signInWithGitHub } from "helpers/auth";
 
 function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [error, setError] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-      setError();
+      setError(null);
 
       try {
         await signin(email, password);
@@ -30,7 +30,7 @@ function Login() {
     setter(target.value);
   }, []);
 
-  const googleSignIn = useCallback(async function () {
+  const googleSignIn = useCallback(async () => {
     try {
       await signInWithGoogle();
     } catch (e) {
@@ -38,7 +38,7 @@ function Login() {
     }
   }, []);
 
-  const githubSignIn = useCallback(async function () {
+  const githubSignIn = useCallback(async () => {
     try {
       await signInWithGitHub();
     } catch (e) {
